@@ -17,6 +17,7 @@ import {
   updateDoc,
 } from "@firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "@firebase/storage";
+import { useSession } from "next-auth/react";
 
 const Input = () => {
   const [input, setInput] = React.useState("");
@@ -24,12 +25,17 @@ const Input = () => {
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [showEmojis, setShowEmojis] = React.useState(false);
   const filePickerRef = React.useRef(null);
+  const { data: session } = useSession();
 
   const submitPost = async () => {
     if (loading) return;
     setLoading(true);
 
     const docRef = await addDoc(collection(db, "posts"), {
+      id: session.user.uid,
+      username: session.user.name,
+      profileImg: session.user.image,
+      tag: session.user.tag,
       text: input,
       timestamp: serverTimestamp(),
     });
