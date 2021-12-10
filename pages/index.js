@@ -1,8 +1,16 @@
 import Head from "next/head";
 import Feed from "../components/Feed";
 import Sidebar from "../components/Sidebar";
+import { getProviders, getSession, useSession } from "next-auth/react";
+import Login from "../components/Login";
 
-export default function Home() {
+export default function Home({ providers }) {
+  const { data: session } = useSession();
+
+  if (!session) {
+    return <Login providers={providers} />;
+  }
+
   return (
     <div>
       <Head>
@@ -19,4 +27,16 @@ export default function Home() {
       Home Page
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const providers = await getProviders();
+  const session = await getSession(context);
+
+  return {
+    props: {
+      providers,
+      session,
+    },
+  };
 }
