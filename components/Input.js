@@ -11,11 +11,15 @@ import { Picker } from "emoji-mart";
 
 const Input = () => {
   const [input, setInput] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [showEmojis, setShowEmojis] = React.useState(false);
   const filePickerRef = React.useRef(null);
 
-  const submitPost = () => {};
+  const submitPost = () => {
+    if (loading) return;
+    setLoading(true);
+  };
 
   const addImageToPost = () => {
     console.log("add");
