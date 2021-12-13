@@ -4,7 +4,11 @@ import Sidebar from "../components/Sidebar";
 import { getProviders, getSession, useSession } from "next-auth/react";
 import Login from "../components/Login";
 
+// print
+
 export default function Home({ providers }) {
+  console.log(providers);
+
   const { data: session } = useSession();
   if (!session) {
     return <Login providers={providers} />;
