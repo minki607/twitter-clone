@@ -1,9 +1,23 @@
 import { SparklesIcon } from "@heroicons/react/outline";
 import React from "react";
 import Input from "./Input";
+import Post from "./Post";
+import { db } from "../firebase";
+import { onSnapshot, query, collection, orderBy } from "firebase/firestore";
 
 const Feed = () => {
-  const [post, setPost] = React.useState([]);
+  const [posts, setPosts] = React.useState([]);
+
+  React.useEffect(
+    () =>
+      onSnapshot(
+        query(collection(db, "posts"), orderBy("timestamp", "desc")),
+        (snapshot) => {
+          setPosts(snapshot.docs);
+        }
+      ),
+    [db]
+  );
 
   return (
     <div className="text-white flex-grow border-l border-gray-700 max-w-2xl sm:ml-[73px] xl:ml-[370px]">
@@ -15,7 +29,9 @@ const Feed = () => {
       </div>
       <Input />
       <div className="pb-72">
-        
+        {posts.map((post) => (
+          <Post key={post.id} id={post.id} post={post.data()} />
+        ))}
       </div>
     </div>
   );

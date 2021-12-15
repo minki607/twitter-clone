@@ -48,11 +48,12 @@ const Input = () => {
       } catch (error) {
         console.error(error);
       }
-      setLoading(false);
+
       setInput("");
       setSelectedFile(null);
       setShowEmojis(false);
     }
+    setLoading(false);
   };
 
   const addImageToPost = (e) => {
